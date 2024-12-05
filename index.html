@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced JSON Path to Java Method Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Generate Test Assertions from JsonPath</h1>
+
+    <div class="table-wrapper">
+        <table id="jsonPathsTable">
+            <thead>
+                <tr>
+                    <th>Actual List JsonPath</th>
+                    <th>Expected List JsonPath</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+                <tr>
+                    <td><input type="text" class="listActual" placeholder="[*].billingAccount.id" /></td>
+                    <td><input type="text" class="listExpected" placeholder="[*].productTerm[?(@.type='mobile')].value" /></td>
+                    <td><button class="remove-btn" onclick="removeRow(this)">&#10006;</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="btn-group">
+        <button class="add-btn" onclick="addRow()">Add Row</button>
+    </div>
+
+    <div class="generate-btn-container">
+        <button class="generate-btn" onclick="generateMethods()">Generate All Methods</button>
+    </div>
+
+    <h2>Generated Java Methods:</h2>
+    <textarea id="outputText" readonly></textarea>
+    <!-- Add this below the "Generated Java Methods:" text -->
+<div class="copy-btn-container">
+    <button class="copy-btn" onclick="copyToClipboard()">Copy All</button>
+</div>
+
+
+    <div id="output-container" class="expandable-output"></div>
+    
+</div>
+
+<div class="footer">
+    <p>© 2024 Mohamed Hammad - VOIS. All rights reserved.</p>
+</div>
+
+<div class="toast" id="toast">All methods copied to clipboard!</div>
+
+<script src="script.js"></script>
+</body>
+</html>

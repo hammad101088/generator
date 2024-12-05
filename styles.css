@@ -1,0 +1,182 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+    padding: 20px;
+    margin: auto;
+    max-width: 80%;
+}
+
+h1 {
+    text-align: center;
+}
+
+.table-wrapper {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+td input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    font-size: 16px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background-color: #218838;
+}
+
+.remove-btn {
+    background-color: transparent;
+    border: none;
+    color: #ff4f5a;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    color: #e04348;
+}
+
+.generate-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.generate-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.generate-btn:hover {
+    background-color: #0056b3;
+}
+
+#outputText {
+    width: 100%;
+    min-height: 300px;
+    max-height: 500px;
+    resize: vertical;
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border: 1px solid #ddd;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-y: auto;
+}
+
+.expandable-output {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-family: "Courier New", monospace;
+    font-size: 14px;
+    overflow: auto;
+    display: none;
+}
+
+.footer {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #777;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+}
+
+.table-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Style for the Copy All button */
+.copy-btn-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.copy-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.copy-btn:hover {
+    background-color: #218838;
+}
+
