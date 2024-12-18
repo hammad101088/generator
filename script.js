@@ -7,6 +7,7 @@ function addRow() {
         <td><input type="text" class="listActual" placeholder="Enter listActual JSON Path" /></td>
         <td><input type="text" class="listExpected" placeholder="Enter listExpected JSON Path" /></td>
         <td><button class="remove-btn" onclick="removeRow(this)">&#10006;</button></td>
+        <td><button class="remove-btn" onclick="removeRow(this)">&#10006;</button></td>
     `;
     tableBody.appendChild(newRow);
 }
@@ -100,6 +101,7 @@ function generateMethods() {
             const actualField = getFinalField(listActual);
 
             const javaMethod = `verifyMandatoryListEquals(
+            const javaMethod = `verifyMandatoryListEquals(
     ${actualMethod},
     ${expectedMethod},
     "${actualField}");`;
@@ -127,8 +129,17 @@ function showToast(message) {
     // Add show class for animation
     toast.classList.add("show");
     
+    
+    // Add show class for animation
+    toast.classList.add("show");
+    
     document.body.appendChild(toast);
 
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => {
+            toast.remove();
+        }, 300); // Wait for fade out animation
     setTimeout(() => {
         toast.classList.remove("show");
         setTimeout(() => {
@@ -142,6 +153,61 @@ function copyToClipboard() {
     const outputText = document.getElementById("outputText");
     const text = outputText.value;
 
+    if (!text) {
+        showToast("No content to copy!");
+        return;
+    }
+
+    navigator.clipboard.writeText(text)
+        .then(() => {
+            showToast("Copied to clipboard!");
+        })
+        .catch(err => {
+            console.error('Failed to copy: ', err);
+            showToast("Failed to copy!");
+        });
+}
+
+// Add example rows function
+function addExampleRows() {
+    const examples = [
+        {
+            actual: "[*].orders.items[?(@.type='premium')].price",
+            expected: "[*].expectedPricing.premiumItems.value"
+        },
+        {
+            actual: "[*].billingAccount.id",
+            expected: "[*].accountDetails.id"
+        }
+    ];
+
+    examples.forEach(example => {
+        const tableBody = document.getElementById("table-body");
+        const newRow = document.createElement("tr");
+        newRow.innerHTML = `
+            <td><input type="text" class="listActual" value="${example.actual}" /></td>
+            <td><input type="text" class="listExpected" value="${example.expected}" /></td>
+            <td><button class="remove-btn" onclick="removeRow(this)">&#10006;</button></td>
+        `;
+        tableBody.appendChild(newRow);
+    });
+}
+
+// Clear all rows function
+function clearAllRows() {
+    const tableBody = document.getElementById("table-body");
+    tableBody.innerHTML = '';
+    addRow(); // Add one empty row
+    
+    // Clear output
+    const outputText = document.getElementById("outputText");
+    outputText.value = '';
+}
+
+// Initialize the page with example data
+document.addEventListener('DOMContentLoaded', function() {
+    clearAllRows(); // Start with one empty row
+});
     if (!text) {
         showToast("No content to copy!");
         return;
