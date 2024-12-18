@@ -28,32 +28,38 @@ function mapJsonPathToMethod(jsonPath) {
     }
 }
 
-// Handle JSON paths with filters like [*].orders.items[?(@.type='premium')].price
+// Handle JSON paths with filters like [*].productTerm[?(@.name='mobile')].id
 function mapFilteredJsonPath(jsonPath) {
-    const basePath = jsonPath.split("[?(")[0];  // Get the part before the filter
-    const filterCondition = jsonPath.split("[?(")[1] ? jsonPath.split("[?(")[1].split(")]")[0] : null;
+    // Split the path into segments
+    const [beforeFilter, afterFilter] = jsonPath.split("[?(");
     
-    // Remove [*]. and get the full path
-    const fullPath = basePath.replace("[*].", "");
+    if (!afterFilter) return "Invalid filter format";
     
-    // Get the path up to the filtered field
-    const pathParts = fullPath.split(".");
-    const lastField = pathParts[pathParts.length - 1];
-    const basePathWithoutLast = pathParts.slice(0, -1).join(".");
+    // Get base path without [*]
+    const basePath = beforeFilter.replace("[*].", "");
     
-    // Process filter condition
-    if (filterCondition) {
-        const cleanedFilterCondition = filterCondition.replace(/['"]/g, '').split("=");
-        const filterField = cleanedFilterCondition[0].trim().replace(/^@./, '');
-        const filterValue = cleanedFilterCondition[1].trim();
-        
-        return `extractFilteredList(
-        extractList(responseList, "${basePathWithoutLast}.${lastField}"),
-        extractList(responseList, "${basePathWithoutLast}.${filterField}"),
+    // Extract filter condition and final path
+    const filterPart = afterFilter.split(")].");
+    if (filterPart.length !== 2) return "Invalid filter format";
+    
+    const filterCondition = filterPart[0];
+    const finalField = filterPart[1];
+    
+    // Parse filter condition
+    const cleanedFilterCondition = filterCondition.replace(/['"]/g, '').split("=");
+    if (cleanedFilterCondition.length !== 2) return "Invalid filter condition";
+    
+    const filterField = cleanedFilterCondition[0].trim().replace(/^@./, '');
+    const filterValue = cleanedFilterCondition[1].trim();
+    
+    // Construct the paths
+    const mainPath = `${basePath}.${finalField}`;
+    const filterPath = `${basePath}.${filterField}`;
+    
+    return `extractFilteredList(
+        extractList(responseList, "${filterPath}"),
+        extractList(responseList, "${mainPath}"),
         "${filterValue}")`;
-    }
-    
-    return "Invalid filter condition";
 }
 
 // Handle simple JSON paths like [*].billingAccount.id
@@ -64,10 +70,18 @@ function mapSimpleJsonPath(jsonPath) {
 
 // Extract the final field from the JSON path
 function getFinalField(jsonPath) {
-    const filteredPath = jsonPath.split("[?(")[0];  // Remove any filter part
-    const fields = filteredPath.replace("[*].", "").split(".");
-    return fields[fields.length - 1];
+    if (jsonPath.includes("[?(")) {
+        // For filtered paths, get the field after the filter
+        const parts = jsonPath.split(")].");
+        return parts[parts.length - 1];
+    } else {
+        // For simple paths
+        const fields = jsonPath.replace("[*].", "").split(".");
+        return fields[fields.length - 1];
+    }
 }
+
+// Rest of the functions remain the same...
 
 // Function to generate methods for all input rows
 function generateMethods() {
